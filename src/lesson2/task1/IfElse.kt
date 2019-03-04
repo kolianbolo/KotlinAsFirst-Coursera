@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -62,7 +63,24 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    if ((age < 0) || (age > 200)) {
+        throw IllegalArgumentException("Age has illegal value $age")
+    }
+    val lastTwoDigits = age % 100
+    val teens = lastTwoDigits / 10
+    val ones = lastTwoDigits % 10
+    if (teens == 1) {
+        return "$age лет"
+    }
+    if (ones == 1) {
+        return "$age год"
+    }
+    if ((ones >= 2) && (ones <= 4)) {
+        return "$age года"
+    }
+    return "$age лет"
+}
 
 /**
  * Простая
@@ -73,7 +91,20 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val fistSegment = t1 * v1
+    val secondSegment = t2 * v2
+    val thirdSegment = t3 * v3
+    val fullLength = fistSegment + secondSegment + thirdSegment
+    val halfLength = fullLength / 2
+    if (fistSegment >= halfLength) {
+        return halfLength / v1
+    }
+    if ((fistSegment + secondSegment) >= halfLength) {
+        return t1 + (halfLength - fistSegment) / v2
+    }
+    return t1 + t2 + (halfLength - (secondSegment + fistSegment)) / v3
+}
 
 /**
  * Простая
@@ -86,7 +117,16 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    val firstRookDanger = (kingX == rookX1) || (kingY == rookY1)
+    val secondRookDanger = (kingX == rookX2) || (kingY == rookY2)
+    if (firstRookDanger && secondRookDanger) {
+        return 3
+    }
+    firstRookDanger.takeIf { it }?.apply { return 1 }
+    secondRookDanger.takeIf { it }?.apply { return 2 }
+    return 0
+}
 
 /**
  * Простая
@@ -100,7 +140,16 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    val rookDanger = (kingX == rookX) || (kingY == rookY)
+    val bishopDanger = (kingX - bishopX == kingY - bishopY) || (kingX - bishopX == bishopY - kingY)
+    if (rookDanger && bishopDanger) {
+        return 3
+    }
+    rookDanger.takeIf { it }?.apply { return 1 }
+    bishopDanger.takeIf { it }?.apply { return 2 }
+    return 0
+}
 
 /**
  * Простая
@@ -110,7 +159,18 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val triangle = arrayOf(a, b, c).sorted()
+    if (triangle[0] + triangle[1] < triangle[2]) {
+        return -1
+    }
+    val kind = ((triangle[0] * triangle[0] + triangle[1] * triangle[1]) - triangle[2] * triangle[2])
+    return when (kind) {
+        in Double.MIN_VALUE..Double.MAX_VALUE -> 0
+        in (-1 * Double.MAX_VALUE)..(-1 * Double.MIN_VALUE) -> 2
+        else -> 1
+    }
+}
 
 /**
  * Средняя
@@ -120,4 +180,19 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if (c in a..b) {
+        if (d <= b) {
+            return d - c
+        }
+        return b - c
+    }
+
+    if (a in c..d) {
+        if (b <= d) {
+            return b - a
+        }
+        return d - a
+    }
+    return -1
+}
