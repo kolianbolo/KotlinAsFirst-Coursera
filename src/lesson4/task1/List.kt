@@ -362,13 +362,6 @@ fun russian(n: Int): String {
         if (i == 3) {
             needThousandsPostfix = true
         }
-        if (currentDigit == 0) {
-            if (needThousandsPostfix) {
-                resultList.add(thousandsPostfix(n))
-                needThousandsPostfix = needThousandsPostfix.not()
-            }
-            continue
-        }
         when (i) {
             2, 5 -> hundreds[currentDigit]?.let { resultList.add(it) }
             1, 4 -> {
