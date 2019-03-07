@@ -73,7 +73,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var count = 0
-    var quotient = n;
+    var quotient = n
     do {
         count++
         quotient = quotient / 10
@@ -276,7 +276,7 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int = assemble(disassemble(n).asReversed())
 
-private fun disassemble(n: Int): MutableList<Int> {
+fun disassemble(n: Int): MutableList<Int> {
     if (n / 10 == 0) {
         return mutableListOf(n % 10)
     }
@@ -286,7 +286,7 @@ private fun disassemble(n: Int): MutableList<Int> {
 }
 
 private fun assemble(digits: List<Int>): Int {
-    var result: Int = 0
+    var result = 0
     for (i in 0..(digits.size - 1)) {
         result += digits[i] * pow(10.0, i.toDouble()).toInt()
     }
