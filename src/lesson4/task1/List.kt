@@ -355,12 +355,12 @@ private val ones = mapOf(1 to "один", 2 to "два", 3 to "три", 4 to "ч
 fun russian(n: Int): String {
     val digits = disassemble(n)
     val resultList = mutableListOf<String>()
-    var needThousandsPostfix = false
+    var thousandsflag = false
     var addOnes = true
     label@ for (i in digits.size - 1 downTo 0) {
         val currentDigit = digits[i]
         if (i == 3) {
-            needThousandsPostfix = true
+            thousandsflag = true
         }
         when (i) {
             2, 5 -> hundreds[currentDigit]?.let { resultList.add(it) }
@@ -386,9 +386,9 @@ fun russian(n: Int): String {
                 addOnes = true
             }
         }
-        if (needThousandsPostfix) {
+        if (thousandsflag) {
             resultList.add(thousandsPostfix(n))
-            needThousandsPostfix = needThousandsPostfix.not()
+            thousandsflag = !thousandsflag
         }
     }
     return assembleRussianDigits(resultList)
